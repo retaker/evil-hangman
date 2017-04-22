@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include "SDL_Plotter.h"
+#include "Point.h"
 
 #ifndef Graphics_h
 #define Graphics_h
@@ -20,24 +21,24 @@ void plotSquare(int x, int y, int size, SDL_Plotter& plotter);
 /****                SIMPLE DRAWING FUNCTIONS               *******/
 
 // Function that draws a line between two points
-void drawLine(int x1, int y1, int x2, int y2, SDL_Plotter& plotter) {
+void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
     
     // Calculating m & b for y = mx + b between the two points
     double m, b;
-    m = (y2-y1)/(x2-x1);
-    b = y2-(m*x2);
+    m = (p2.y-p1.y)/(p2.x-p1.x);
+    b = p2.y-(m*p2.x);
     
     // Printing the line
-    for (int i = x1; i < x2  && x1 + i < plotter.getCol(); i++) {
-        for (int j = y1; j < y2 && y1 + j < plotter.getRow(); j++) {
+    for (int i = p1.x; i < p2.x  && p1.x + i < plotter.getCol(); i++) {
+        for (int j = p1.y; j < p2.y && p1.y + j < plotter.getRow(); j++) {
             
-            if (x1 + i != x2 && y1 + j != y2) {
+            if (p1.x + i != p2.x && p1.y + j != p2.y) {
                 
                 // Calcuating the m & b for y = mx + b for individual points,
                 // to see if they are on the line
                 double approximateM, approximateB;
-                approximateM = (y2-(y1+j))/(x2-(x1+i));
-                approximateB = (y1+j)-(m*(x1+i));
+                approximateM = (p2.y-(p1.y+j))/(p2.x-(p1.x+i));
+                approximateB = (p1.y+j)-(m*(p1.x+i));
                 
                 // Checking the differnce between the actual m & b and the
                 // approximate m & b
@@ -51,7 +52,7 @@ void drawLine(int x1, int y1, int x2, int y2, SDL_Plotter& plotter) {
                     ((differenceB < lineWidth && differenceB > -1*lineWidth))){
                     
                     // Plotting the individual points on the
-                    plotter.plotPixel(x1 + i, y1 + j, 256, 256, 256);
+                    plotter.plotPixel(p1.x + i, p1.y + j, p1.R , p1.G, p1.B);
                 }
                 
             } // If the point isn't at the end point
@@ -65,23 +66,23 @@ void drawLine(int x1, int y1, int x2, int y2, SDL_Plotter& plotter) {
 
 // Function that draws a circle at (x, y) with a given width and height
 // (x, y) represents the top left corner of the circle
-void drawCircle(int x, int y, int radius, SDL_Plotter& plotter) {
+void drawCircle(Point p, int radius, SDL_Plotter& plotter) {
     
     // Getting the center of the circle
     int centerX, centerY;
     
-    centerX = x + radius;
-    centerY = y + radius;
+    centerX = p.x + radius;
+    centerY = p.y + radius;
     
     // Plotting the edge of the circle
-    for (int i = 0; i < radius*2 && x + i < plotter.getCol(); i++) {
-        for (int j = 0; j < radius*2 && y + j < plotter.getRow(); j++) {
+    for (int i = 0; i < radius*2 && p.x + i < plotter.getCol(); i++) {
+        for (int j = 0; j < radius*2 && p.y + j < plotter.getRow(); j++) {
             
             int lineWidth = 10;
             // Checking to see if point is on the edge of the circle
-            if ( pow(((x + i) - centerX), 2) + pow(((y + j) - centerY), 2) <=
+            if ( pow(((p.x + i) - centerX), 2) + pow(((p.y + j) - centerY), 2) <=
                 pow(radius - pow(lineWidth, 0.5), 2)) {
-                plotter.plotPixel(x + i, y + j, 256, 256, 256);
+                plotter.plotPixel(p.x + i, p.y + j, 256, 256, 256);
             }
             
         }
@@ -93,11 +94,11 @@ void drawCircle(int x, int y, int radius, SDL_Plotter& plotter) {
 
 // Function that draws a rectangle at (x, y) with a given width and height
 // (x, y) represents the top left corner
-void drawRectangle(int x, int y, int height, int width, SDL_Plotter& plotter) {
+void drawRectangle(Point p, int height, int width, SDL_Plotter& plotter) {
     
     // Plotting the edges of the rectanlge
-    for (int i = 0; i < width && x + i < plotter.getCol(); i++) {
-        for (int j = 0; j < height && y + j < plotter.getRow();  j++) {
+    for (int i = 0; i < width && p.x + i < plotter.getCol(); i++) {
+        for (int j = 0; j < height && p.y + j < plotter.getRow();  j++) {
             
             int lineWidth = 10;
             // Checking to see if the point is on an edge
@@ -105,7 +106,7 @@ void drawRectangle(int x, int y, int height, int width, SDL_Plotter& plotter) {
                 i + 1 >= width - (lineWidth-1) ||
                 j + 1 >= height - (lineWidth-1)) {
                 
-                plotter.plotPixel(x + i, y + j, 256, 256, 256);
+                plotter.plotPixel(p.x + i, p.y + j, 256, 256, 256);
                 
             }
             
@@ -115,7 +116,7 @@ void drawRectangle(int x, int y, int height, int width, SDL_Plotter& plotter) {
     
 }
 
-void plotLetter(char letter,int x, int y, int size, SDL_Plotter& plotter) {
+void plotLetter(char letter, Point p, int size, SDL_Plotter& plotter) {
     
     // Getting the letter file to be read in
     ifstream input;
@@ -143,7 +144,7 @@ void plotLetter(char letter,int x, int y, int size, SDL_Plotter& plotter) {
             cout << readInteger << " ";
             
             if (readInteger == 1) {
-                plotSquare(x + (i*size), y + (j*size), size, plotter);
+                plotSquare(p.x + (i*size), p.y + (j*size), size, plotter);
             }
             
         }
@@ -171,6 +172,31 @@ void plotSquare(int x, int y, int size, SDL_Plotter& plotter) {
 
 /*****                  DRAWING OF THE MAN & STOCK              *****/
 
+// Plots a shelf at Point location
+// location represents the top left corner of the shelf
+void drawShelf(Point location, SDL_Plotter& plotter) {
+    
+    // Back bone of the shelf
+    Point bottomLeft(location.x, location.y + 200);
+    drawLine(location, bottomLeft, plotter);
+
+    
+    // Top middle of the shelf
+    Point topMiddle(location.x + 50, location.y);
+    drawLine(location, topMiddle, plotter);
+    
+    // Bottom of the shelf
+    Point bottomRight(bottomLeft.x + 100, bottomLeft.y);
+    drawLine(bottomLeft, bottomRight, plotter);
+    
+    
+}
+
+
+
+void drawMan() {
+    
+}
 
 
 #endif /* Graphics_h */

@@ -10,6 +10,7 @@ int main(int argc, char ** argv)
 {
     
     SDL_Plotter thePlot(1000, 1000);
+    Point p1(100, 100), p2(200, 200), p3(200, 400), p4(200, 600), p5(600, 300);
     int x, y;
     int R, G, B;
 
@@ -22,18 +23,19 @@ int main(int argc, char ** argv)
         B = rand()%256;
         
         
-        drawLine(100, 100, 200, 200, thePlot);
         
-        drawRectangle(200, 200, 100, 500, thePlot);
+        // drawLine(p1, p2, thePlot);
+        
+        // drawRectangle(p3, 100, 500, thePlot);
                 
-        drawCircle(400, 400, 100, thePlot);
+        // drawCircle(p4, 100, thePlot);
         
         thePlot.update();
         if (thePlot.kbhit()) {
             char a = thePlot.getKey();
             
             if (a == 'A') {
-                plotLetter(a, 800, 400, 5, thePlot);
+                plotLetter(a, p5, 5, thePlot);
             }
         }
         
