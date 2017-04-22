@@ -8,10 +8,16 @@
 
 
 #include <iostream>
+#include <fstream>
 #include "SDL_Plotter.h"
 
 #ifndef Graphics_h
 #define Graphics_h
+
+void plotSquare(int x, int y, int size, SDL_Plotter& plotter);
+
+
+/****                SIMPLE DRAWING FUNCTIONS               *******/
 
 // Function that draws a line between two points
 void drawLine(int x1, int y1, int x2, int y2, SDL_Plotter& plotter) {
@@ -109,20 +115,62 @@ void drawRectangle(int x, int y, int height, int width, SDL_Plotter& plotter) {
     
 }
 
-void plotLetter(int x, int y, SDL_Plotter& plotter) {
-    int letter [3*5] = {
-        1, 0, 1, 0, 1,
-        0, 1, 0, 1, 0,
-        1, 0, 1, 0, 1};
+void plotLetter(char letter,int x, int y, int size, SDL_Plotter& plotter) {
     
+    // Getting the letter file to be read in
+    ifstream input;
+    string fileName = ".txt";
     
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 5; j++) {
-            plotter.plotPixel(x + i, y + j, 100, 100, 100);
+    // Finalizing the file name to be read in
+    fileName.insert(0, 1, letter);
+
+    // Opening the particular letter file to be read in
+    input.open(fileName);
+    cout << fileName << endl;
+    
+    int theLetter [7][5];
+   
+    int readInteger = 0;
+    
+    // Reading in the letter to a 2-D array
+    for (int j = 0; j < 7; j++) {
+        for (int i = 0; i < 5; i++) {
+            
+            input >> readInteger;
+            
+            theLetter[j][i] = readInteger;
+            
+            cout << readInteger << " ";
+            
+            if (readInteger == 1) {
+                plotSquare(x + (i*size), y + (j*size), size, plotter);
+            }
+            
         }
+        cout << endl;
     }
     
+    input.close();
+    
 }
+
+
+// Function that plots a square, can be used to allow different size fonts
+void plotSquare(int x, int y, int size, SDL_Plotter& plotter) {
+    
+    // Plotting the square
+    for(int i = 0; i < size && x + i < plotter.getCol(); i++) {
+        for (int j = 0; j < size && y + j < plotter.getRow(); j++){
+            
+            plotter.plotPixel(x + i, y + j, 256, 256, 256);
+            
+        }
+    }
+}
+
+
+/*****                  DRAWING OF THE MAN & STOCK              *****/
+
 
 
 #endif /* Graphics_h */
