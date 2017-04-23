@@ -6,29 +6,29 @@
 
 using namespace std;
 
+SDL_Plotter thePlot(1000, 1000);
+
 int main(int argc, char ** argv)
 {
     
-    SDL_Plotter thePlot(1000, 1000);
-    Point p1(100, 100), p2(200, 200), p3(200, 400), p4(200, 600), p5(600, 300);
-    int x, y;
-    int R, G, B;
-
+    
+    Point p1(100, 100), p2(300, 200), p3(200, 400), p4(200, 600), p5(600, 300);
+    
     while (!thePlot.getQuit()) {
 
-        x = thePlot.getCol() - 200;
-        y = thePlot.getRow() - 200;
-        R = rand()%256;
-        G = rand()%256;
-        B = rand()%256;
+        drawShelf(p2, thePlot);
         
+        drawLine(p1, p2, thePlot);
         
-        
-        // drawLine(p1, p2, thePlot);
-        
-        // drawRectangle(p3, 100, 500, thePlot);
+        drawRectangle(p3, 100, 500, thePlot);
                 
-        // drawCircle(p4, 100, thePlot);
+        drawCircle(p4, 100, thePlot);
+        
+        plotHorizontalLine(p1, 50, 10, thePlot);
+        
+        plotVerticalLine(p1, 100, 10, thePlot);
+        
+       
         
         thePlot.update();
         if (thePlot.kbhit()) {

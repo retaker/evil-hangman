@@ -13,7 +13,7 @@ struct Point {
     int x, y;
     int R, G, B;
     
-    Point(int nx = 0, int ny = 0, int nR = 255, int nG = 255, int nB = 255) {
+    Point(int nx = 0, int ny = 0, int nR = 256, int nG = 256, int nB = 256) {
         x = nx;
         y = ny;
         R = nR;

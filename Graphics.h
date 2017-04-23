@@ -52,7 +52,7 @@ void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
                     ((differenceB < lineWidth && differenceB > -1*lineWidth))){
                     
                     // Plotting the individual points on the
-                    plotter.plotPixel(p1.x + i, p1.y + j, p1.R , p1.G, p1.B);
+                    plotter.plotPixel(p1.x + i, p1.y + j, 256, 256, 256);
                 }
                 
             } // If the point isn't at the end point
@@ -80,8 +80,8 @@ void drawCircle(Point p, int radius, SDL_Plotter& plotter) {
             
             int lineWidth = 10;
             // Checking to see if point is on the edge of the circle
-            if ( pow(((p.x + i) - centerX), 2) + pow(((p.y + j) - centerY), 2) <=
-                pow(radius - pow(lineWidth, 0.5), 2)) {
+            if ( pow(((p.x + i) - centerX), 2) + pow(((p.y + j) - centerY), 2)
+                <= pow(radius - pow(lineWidth, 0.5), 2)) {
                 plotter.plotPixel(p.x + i, p.y + j, 256, 256, 256);
             }
             
@@ -169,6 +169,27 @@ void plotSquare(int x, int y, int size, SDL_Plotter& plotter) {
     }
 }
 
+// Prints a veritcal line starting at point p1 with a given height and size
+void plotVerticalLine(Point p1, int height, int size, SDL_Plotter& plotter) {
+    
+    int increment = height/size;
+    
+    for (int j = 0; j < increment; j++){
+        plotSquare(p1.x, p1.y + (j*size), size, plotter);
+    }
+    
+}
+
+// Prints a horizontal line starting at point p1 with a given width and size
+void plotHorizontalLine(Point p1, int width, int size, SDL_Plotter& plotter) {
+    
+    int increment = width/size;
+    
+    for (int i = 0; i < increment; i++) {
+        plotSquare(p1.x + (i * size), p1.y, size, plotter);
+    }
+}
+
 
 /*****                  DRAWING OF THE MAN & STOCK              *****/
 
@@ -177,19 +198,17 @@ void plotSquare(int x, int y, int size, SDL_Plotter& plotter) {
 void drawShelf(Point location, SDL_Plotter& plotter) {
     
     // Back bone of the shelf
-    Point bottomLeft(location.x, location.y + 200);
+    Point bottomLeft(location.x+200, location.y + 600);
     drawLine(location, bottomLeft, plotter);
 
     
     // Top middle of the shelf
-    Point topMiddle(location.x + 50, location.y);
+    Point topMiddle(location.x + 300, location.y + 100);
     drawLine(location, topMiddle, plotter);
     
     // Bottom of the shelf
-    Point bottomRight(bottomLeft.x + 100, bottomLeft.y);
+    Point bottomRight(bottomLeft.x + 600, bottomLeft.y + 100);
     drawLine(bottomLeft, bottomRight, plotter);
-    
-    
 }
 
 
