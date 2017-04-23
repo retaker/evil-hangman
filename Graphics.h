@@ -511,7 +511,7 @@ void GameOver(SDL_Plotter& plotter)
 	Point End = Point(450, 550, 0, 0, 0);
 	putString("Press Esc to exit", End, 4, plotter);
 }
-void WonScreen(SDL_Plotter&plotter) 
+void WonScreen(SDL_Plotter&plotter,int namePosition) 
 {
 	Point Title = Point(400, 50, 0, 0, 0);
 	putString("YOU WON", Title, 10, plotter);
@@ -519,10 +519,34 @@ void WonScreen(SDL_Plotter&plotter)
 	putString("Your Score", Score, 6, plotter);
 	Point Msg = Point(400, 300, 0, 0, 0);
 	putString("Please Type your name", Msg, 6,plotter);
-	Point line1 = Point(400, 450, 0, 0, 0);
-	Point line2 = Point(550, 450, 0, 0, 0);
-	Point line3 = Point(700, 450, 0, 0, 0);
-	Point line4 = Point(850, 450, 0, 0, 0);
+	int r1=0, g1=0, b1=0;
+	int r2=0, g2=0, b2=0;
+	int r3=0, g3=0, b3=0;
+	int r4=0, g4=0, b4=0;
+	if (namePosition == 1) {
+		r1 = 169;
+		g1 = 169;
+		b1 = 169;
+	}
+	else if (namePosition == 2) {
+		r2 = 169;
+		g2 = 169;
+		b2 = 169;
+	}
+	else if (namePosition == 2) {
+		r3 = 169;
+		g3 = 169;
+		b3 = 169;
+	}
+	else if (namePosition == 2) {
+		r4 = 169;
+		g4 = 169;
+		b4 = 169;
+	}
+	Point line1 = Point(400, 450, r1, g1, b1);
+	Point line2 = Point(550, 450, r2, g2, b2);
+	Point line3 = Point(700, 450, r3, g3, b3);
+	Point line4 = Point(850, 450, r4, g4, b4);
 	plotHorizontalLine(line1, 50, 4, plotter);
 	plotHorizontalLine(line2, 50, 4, plotter);
 	plotHorizontalLine(line3, 50, 4, plotter);
