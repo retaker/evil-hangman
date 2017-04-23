@@ -28,6 +28,10 @@ void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
     m = (p2.y-p1.y)/(p2.x-p1.x);
     b = p2.y-(m*p2.x);
     
+    
+    // Picking = 0 the starting and ending y values
+    
+    if(p1.y < p2.y) {
     // Printing the line
     for (int i = p1.x; i < p2.x  && p1.x + i < plotter.getCol(); i++) {
         for (int j = p1.y; j < p2.y && p1.y + j < plotter.getRow(); j++) {
@@ -52,7 +56,7 @@ void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
                     ((differenceB < lineWidth && differenceB > -1*lineWidth))){
                     
                     // Plotting the individual points on the
-                    plotter.plotPixel(p1.x + i, p1.y + j, 256, 256, 256);
+                    plotter.plotPixel(p1.x + i, p1.y + j, p1.R, p1.G, p1.B);
                 }
                 
             } // If the point isn't at the end point
@@ -60,7 +64,43 @@ void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
         } // Inside for loop
         
     } // Outside for loop
+    }
     
+    else {
+        // Printing the line
+        for (int i = p1.x; i < p2.x  && p1.x + i < plotter.getCol(); i++) {
+            for (int j = p1.y; j > p2.y && p1.y - j > 0; j--) {
+                
+                if (p1.x + i != p2.x && p1.y + j != p2.y) {
+                    
+                    // Calcuating the m & b for y = mx + b for individual points,
+                    // to see if they are on the line
+                    double approximateM, approximateB;
+                    approximateM = (p2.y-(p1.y+j))/(p2.x-(p1.x+i));
+                    approximateB = (p1.y+j)-(m*(p1.x+i));
+                    
+                    // Checking the differnce between the actual m & b and the
+                    // approximate m & b
+                    double differenceM, differenceB;
+                    differenceM = m - approximateM;
+                    differenceB = b - approximateB;
+                    
+                    int lineWidth = 10;
+                    // Adjust the Differences to set the width of the line
+                    if ((differenceM < lineWidth && differenceM > -1*lineWidth) &&
+                        ((differenceB < lineWidth && differenceB > -1*lineWidth))){
+                        
+                        // Plotting the individual points on the
+                        plotter.plotPixel(p1.x + i, p1.y + j, p1.R, p1.G, p1.B);
+                    }
+                    
+                } // If the point isn't at the end point
+                
+            } // Inside for loop
+            
+        } // Outside for loop
+        
+    }
 }
 
 
@@ -82,7 +122,7 @@ void drawCircle(Point p, int radius, SDL_Plotter& plotter) {
             // Checking to see if point is on the edge of the circle
             if ( pow(((p.x + i) - centerX), 2) + pow(((p.y + j) - centerY), 2)
                 <= pow(radius - pow(lineWidth, 0.5), 2)) {
-                plotter.plotPixel(p.x + i, p.y + j, 256, 256, 256);
+                plotter.plotPixel(p.x + i, p.y + j, p.R, p.G, p.B);
             }
             
         }
@@ -195,25 +235,76 @@ void plotHorizontalLine(Point p1, int width, int size, SDL_Plotter& plotter) {
 
 // Plots a shelf at Point location
 // location represents the top left corner of the shelf
-void drawShelf(Point location, SDL_Plotter& plotter) {
+void drawShelf(Point location, int size, SDL_Plotter& plotter) {
+    
+    int lineWidth = 10;
+    int shelfHeight = size*5;
+    int topArmLength = size*2;
+    int ropeHeight = size*1.5;
     
     // Back bone of the shelf
-    Point bottomLeft(location.x+200, location.y + 600);
-    drawLine(location, bottomLeft, plotter);
+    plotVerticalLine(location, shelfHeight, lineWidth, plotter);
 
+    // Top piece of the shelf
+    plotHorizontalLine(location, topArmLength, lineWidth, plotter);
     
-    // Top middle of the shelf
-    Point topMiddle(location.x + 300, location.y + 100);
-    drawLine(location, topMiddle, plotter);
+    // Rope of the shelf
+    Point topMiddle(location.x + topArmLength, location.y);
+    plotVerticalLine(topMiddle, ropeHeight, lineWidth, plotter);
     
     // Bottom of the shelf
-    Point bottomRight(bottomLeft.x + 600, bottomLeft.y + 100);
-    drawLine(bottomLeft, bottomRight, plotter);
+    Point bottomLeft(location.x - topArmLength/2, location.y + shelfHeight);
+    plotHorizontalLine(bottomLeft, topArmLength*2, lineWidth, plotter);
+    
+    
+
 }
 
+// Draws the head of the Hangman at point p with a give size
+//
+void drawHead(Point p, int size, SDL_Plotter& plotter) {
+    
+    int prevR = p.R;
+    int prevG = p.G;
+    int prevB = p.B;
+    
+    int lineWidth = 10;
+    
+    p.setColor(0, 0, 0);
+    drawCircle(p, size, plotter);
+    
+    // Changing the inner circle's color to white and positioning it correctly
+    p.setColor(255, 255, 255);
+    
+    // Getting new coordinates for the inner circle
+    p.x = p.x + lineWidth;
+    p.y = p.y + lineWidth;
+    
+    // Getting new
+    drawCircle(p, size-lineWidth, plotter);
+    p.setColor(prevR,prevG, prevB);
+}
 
+void drawRightLimb(Point p, int size, SDL_Plotter& plotter) {
+    
+    // Creating the endpoint for the right limb
+    Point endpoint(p.x + size, p.y + size);
+    
+    drawLine(p, endpoint, plotter);
+    
+    
+}
 
-void drawMan() {
+void drawLeftLimb(Point p, int size, SDL_Plotter& plotter) {
+    
+    // Creating the beginning for the left limb
+    Point beginning(p.x - size, p.y + size);
+    
+    drawLine(beginning, p, plotter);
+    
+}
+
+void drawMan(Point p, int size, SDL_Plotter& plotter) {
     
 }
 

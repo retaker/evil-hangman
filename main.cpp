@@ -12,21 +12,24 @@ int main(int argc, char ** argv)
 {
     
     
-    Point p1(100, 100), p2(300, 200), p3(200, 400), p4(200, 600), p5(600, 300);
+    Point p1(103, 100), p2(300, 200), p3(200, 400), p4(200, 600), p5(600, 300);
     
     while (!thePlot.getQuit()) {
+        
+        drawRightLimb(p1, 100, thePlot);
+        drawLeftLimb(p1, 100, thePlot);
 
-        drawShelf(p2, thePlot);
+        // drawHead(p1, 100, thePlot);
         
-        drawLine(p1, p2, thePlot);
+        // drawLine(p1, p2, thePlot);
         
-        drawRectangle(p3, 100, 500, thePlot);
+        // drawRectangle(p3, 100, 500, thePlot);
                 
-        drawCircle(p4, 100, thePlot);
+        // drawCircle(p4, 100, thePlot);
         
-        plotHorizontalLine(p1, 50, 10, thePlot);
+        // plotHorizontalLine(p1, 50, 10, thePlot);
         
-        plotVerticalLine(p1, 100, 10, thePlot);
+        // plotVerticalLine(p1, 100, 10, thePlot);
         
        
         
