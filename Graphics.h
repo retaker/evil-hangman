@@ -15,7 +15,7 @@
 #ifndef Graphics_h
 #define Graphics_h
 
-void plotSquare(int x, int y, int size, SDL_Plotter& plotter);
+void plotSquare(Point p, int size, SDL_Plotter& plotter);
 
 
 /****                SIMPLE DRAWING FUNCTIONS               *******/
@@ -186,7 +186,7 @@ void plotLetter(char letter, Point p, int size, SDL_Plotter& plotter) {
             cout << readInteger << " ";
             
             if (readInteger == 1) {
-                plotSquare(p.x + (i*size), p.y + (j*size), size, plotter);
+             //   plotSquare(p.x + (i*size), p.y + (j*size), size, plotter);
             }
             
         }
@@ -199,14 +199,12 @@ void plotLetter(char letter, Point p, int size, SDL_Plotter& plotter) {
 
 
 // Function that plots a square, can be used to allow different size fonts
-void plotSquare(int x, int y, int size, SDL_Plotter& plotter) {
+void plotSquare(Point p, int size, SDL_Plotter& plotter) {
     
     // Plotting the square
-    for(int i = 0; i < size && x + i < plotter.getCol(); i++) {
-        for (int j = 0; j < size && y + j < plotter.getRow(); j++){
-            
-            plotter.plotPixel(x + i, y + j, 256, 256, 256);
-            
+    for (int i = 0; i < size && p.x + i < plotter.getCol(); i++) {
+        for (int j = 0; j < size && p.y + j < plotter.getRow(); j++) {
+            plotter.plotPixel(p.x + i, p.y + j, p.R, p.G, p.B);
         }
     }
 }
@@ -216,8 +214,10 @@ void plotVerticalLine(Point p1, int height, int size, SDL_Plotter& plotter) {
     
     int increment = height/size;
     
+    Point temp = p1;
     for (int j = 0; j < increment; j++){
-        plotSquare(p1.x, p1.y + (j*size), size, plotter);
+        temp.y = p1.y + (j*size);
+        plotSquare(temp, size, plotter);
     }
     
 }
@@ -227,8 +227,10 @@ void plotHorizontalLine(Point p1, int width, int size, SDL_Plotter& plotter) {
     
     int increment = width/size;
     
+    Point temp = p1;
     for (int i = 0; i < increment; i++) {
-        plotSquare(p1.x + (i * size), p1.y, size, plotter);
+        temp.x = p1.x + (i*size);
+        plotSquare(temp, size, plotter);
     }
 }
 
