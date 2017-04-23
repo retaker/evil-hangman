@@ -12,7 +12,7 @@ int main(int argc, char ** argv)
 {
     
     
-    Point p1(100, 100), p2(300, 200), p3(200, 400), p4(550, 300), p5(600, 300);
+    Point p1(100, 100), p2(300, 200), p3(200, 400), p4(550, 300), p5(255, 188);
     
     while (!thePlot.getQuit()) {
         

@@ -278,7 +278,7 @@ void drawShelf(Point location, int size, SDL_Plotter& plotter) {
     int lineWidth = 10;
     int shelfHeight = size*5;
     int topArmLength = size*2;
-    int ropeHeight = size*1.5;
+    int ropeHeight = size;
     
     // Back bone of the shelf
     plotVerticalLine(location, shelfHeight, lineWidth, plotter);
@@ -366,5 +366,237 @@ void drawMan(Point p, int size, SDL_Plotter& plotter) {
     plotVerticalLine(spine, size*2.5, lineWidth, plotter);
 }
 
+void DefaultScreen(SDL_Plotter& plotter)
+{
+    Point P1 = Point(280, 50, 0, 0, 0);
+    Point P2 = Point(280, 125, 0, 0, 0);
+    Point P3 = Point(376, 600, 0, 0, 0);
+    Point ManPostion = Point(600, 200, 0, 0, 0);
+    Point P5 = Point(850, 700, 0, 0, 0);
+    Point RopeBotton(500, 175, 0, 0, 0);
+    putString("HangMan Game", P1, 10, plotter);
+    putString("Infinite Loop Production", P2, 2, plotter);
+    putString("Press ANY Key to Start", P3, 4, plotter);
+    putString("Copyright 2017.All rights reserved", P5, 2, plotter);
+    drawShelf(RopeBotton, 75, plotter);
+    drawMan(ManPostion, 50, plotter);
+}
+
+void MainMenu(SDL_Plotter& plotter, int level, bool music, int pointer)
+{
+    Point ManPostion = Point(300, 200, 0, 0, 0);
+    Point RopeBotton(200, 175, 0, 0, 0);
+    drawShelf(RopeBotton, 75, plotter);
+    drawMan(ManPostion, 50, plotter);
+    int r1 = 0, g1 = 0, b1 = 0;
+    int r2 = 0, g2 = 0, b2 = 0;
+    int r3 = 0, g3 = 0, b3 = 0;
+    int r4 = 0, g4 = 0, b4 = 0;
+    int r5 = 0, g5 = 0, b5 = 0;
+    
+    Point Menu = Point(575, 50, 0, 0, 0);
+    putString("Menu", Menu, 9, plotter);
+    
+    if (pointer == 1) {
+        r1 = 169;
+        b1 = 169;
+        g1 = 169;
+    }
+    else if (pointer == 2) {
+        r2 = 169;
+        b2 = 169;
+        g2 = 169;
+    }
+    else if (pointer == 3) {
+        r3 = 169;
+        b3 = 169;
+        g3 = 169;
+    }
+    else if (pointer == 4) {
+        r4 = 169;
+        b4 = 169;
+        g4 = 169;
+    }
+    else if (pointer == 5) {
+        r5 = 169;
+        b5 = 169;
+        g5 = 169;
+    }
+    Point OpStart = Point(600, 180, r1, g1, b1);
+    putString("Start", OpStart, 5, plotter);
+    
+    Point OpLevel = Point(600, 250, r2, g2, b2);
+    putString("Level", OpLevel, 5, plotter);
+    Point diff = Point(815, 255, r2, g2, b2);
+    if (level == 4) {
+        putString("EASY", diff, 4, plotter);
+        Point lefttemp1 = Point(800, 250, r2, g2, b2);
+        Point lefttemp2 = Point(780, 265, r2, g2, b2);
+        Point righttemp1 = Point(920, 250, r2, g2, b2);
+        Point righttemp2 = Point(940, 265, r2, g2, b2);
+        drawLeftLimb(lefttemp1, 20, plotter);
+        drawRightLimb(lefttemp2, 20, plotter);
+        drawLeftLimb(righttemp2, 20, plotter);
+        drawRightLimb(righttemp1, 20, plotter);
+    }
+    else if (level == 5) {
+        putString("Normal", diff, 4, plotter);
+        Point lefttemp1 = Point(800, 250, r2, g2, b2);
+        Point lefttemp2 = Point(780, 265, r2, g2, b2);
+        Point righttemp1 = Point(960, 250, r2, g2, b2);
+        Point righttemp2 = Point(980, 265, r2, g2, b2);
+        drawLeftLimb(lefttemp1, 20, plotter);
+        drawRightLimb(lefttemp2, 20, plotter);
+        drawLeftLimb(righttemp2, 20, plotter);
+        drawRightLimb(righttemp1, 20, plotter);
+    }
+    else if (level == 6) {
+        putString("Hard", diff, 4, plotter);
+        Point lefttemp1 = Point(800, 250, r2, g2, b2);
+        Point lefttemp2 = Point(780, 265, r2, g2, b2);
+        Point righttemp1 = Point(920, 250, r2, g2, b2);
+        Point righttemp2 = Point(940, 265, r2, g2, b2);
+        drawLeftLimb(lefttemp1, 20, plotter);
+        drawRightLimb(lefttemp2, 20, plotter);
+        drawLeftLimb(righttemp2, 20, plotter);
+        drawRightLimb(righttemp1, 20, plotter);
+    }
+    Point Opmusic = Point(600, 320, r3, g3, b3);
+    putString("MUSIC", Opmusic, 5, plotter);
+    Point Status = Point(820, 325, r3, g3, b3);
+    if (music == true) {
+        putString("On", Status, 4, plotter);
+        Point lefttemp1 = Point(800, 320, r3, g3, b3);
+        Point lefttemp2 = Point(780, 335, r3, g3, b3);
+        Point righttemp1 = Point(880, 320, r3, g3, b3);
+        Point righttemp2 = Point(900, 335, r3, g3, b3);
+        drawLeftLimb(lefttemp1, 20, plotter);
+        drawRightLimb(lefttemp2, 20, plotter);
+        drawLeftLimb(righttemp2, 20, plotter);
+        drawRightLimb(righttemp1, 20, plotter);
+    }
+    else if (music == false)
+    {
+        putString("Off", Status, 4, plotter);
+        Point lefttemp1 = Point(800, 320, r3, g3, b3);
+        Point lefttemp2 = Point(780, 335, r3, g3, b3);
+        Point righttemp1 = Point(900, 320, r3, g3, b3);
+        Point righttemp2 = Point(920, 335, r3, g3, b3);
+        drawLeftLimb(lefttemp1, 20, plotter);
+        drawRightLimb(lefttemp2, 20, plotter);
+        drawLeftLimb(righttemp2, 20, plotter);
+        drawRightLimb(righttemp1, 20, plotter);
+    }
+    Point Opplayers = Point(600, 390, r4, g4, b4);
+    putString("Players", Opplayers, 5, plotter);
+    
+    Point Opexit = Point(600, 460, r5, g5, b5);
+    putString("EXIT", Opexit, 5, plotter);
+}
+
+void GameOver(SDL_Plotter& plotter)
+{
+    Point ManPostion = Point(225, 290, 0, 0, 0);
+    Point RopeBotton(125, 190, 0, 0, 0);
+    drawShelf(RopeBotton, 75, plotter);
+    drawMan(ManPostion, 50, plotter);
+    Point Title = Point(400, 50, 0, 0, 0);
+    putString("Game Over", Title, 10, plotter);
+    Point Score = Point(450, 200, 0, 0, 0);
+    putString("Your Score", Score, 7, plotter);
+    Point Restart = Point(450, 500, 0, 0, 0);
+    putString("Press R to retry", Restart, 4, plotter);
+    Point End = Point(450, 550, 0, 0, 0);
+    putString("Press Esc to exit", End, 4, plotter);
+}
+void WonScreen(SDL_Plotter&plotter,int namePosition)
+{
+    Point Title = Point(400, 50, 0, 0, 0);
+    putString("YOU WON", Title, 10, plotter);
+    Point Score = Point(400, 200, 0, 0, 0);
+    putString("Your Score", Score, 6, plotter);
+    Point Msg = Point(400, 300, 0, 0, 0);
+    putString("Please Type your name", Msg, 6,plotter);
+    int r1=0, g1=0, b1=0;
+    int r2=0, g2=0, b2=0;
+    int r3=0, g3=0, b3=0;
+    int r4=0, g4=0, b4=0;
+    if (namePosition == 1) {
+        r1 = 169;
+        g1 = 169;
+        b1 = 169;
+    }
+    else if (namePosition == 2) {
+        r2 = 169;
+        g2 = 169;
+        b2 = 169;
+    }
+    else if (namePosition == 2) {
+        r3 = 169;
+        g3 = 169;
+        b3 = 169;
+    }
+    else if (namePosition == 2) {
+        r4 = 169;
+        g4 = 169;
+        b4 = 169;
+    }
+    Point line1 = Point(400, 450, r1, g1, b1);
+    Point line2 = Point(550, 450, r2, g2, b2);
+    Point line3 = Point(700, 450, r3, g3, b3);
+    Point line4 = Point(850, 450, r4, g4, b4);
+    plotHorizontalLine(line1, 50, 4, plotter);
+    plotHorizontalLine(line2, 50, 4, plotter);
+    plotHorizontalLine(line3, 50, 4, plotter);
+    plotHorizontalLine(line4, 50, 4, plotter);
+    Point RopeBotton(125, 190, 0, 0, 0);
+    drawShelf(RopeBotton, 75, plotter);
+    Point Restart = Point(400, 500, 0, 0, 0);
+    putString("Press B to Menu", Restart, 4, plotter);
+    Point End = Point(400, 550, 0, 0, 0);
+    putString("Press Esc to exit", End, 4, plotter);
+}
+
+void GamingScreen(SDL_Plotter& plotter, int level)
+{
+    Point ManPostion = Point(300, 275, 0, 0, 0);
+    Point RopeBotton(200, 175, 0, 0, 0);
+    drawShelf(RopeBotton, 75, plotter);
+    drawMan(ManPostion, 50, plotter);
+    Point Msg = Point(550, 300, 250, 0, 0);
+    putString("Please guess possiable letters in this word", Msg, 2, plotter);
+    int x = 550;
+    int y = 550;
+    for (int i = 0; i < level; i++) {
+        Point line = Point(x, y, 0, 0, 0);
+        plotHorizontalLine(line, 50, 4, plotter);
+        x += 100;
+    }
+}
+
+bool Timer(int seconds)
+{
+    clock_t startTime = clock(); //Start timer
+    
+    clock_t testTime;
+    clock_t timePassed;
+    double secondsPassed;
+    
+    while (true)
+    {
+        testTime = clock();
+        timePassed = startTime - testTime;
+        secondsPassed = timePassed / (double)CLOCKS_PER_SEC;
+        
+        if (secondsPassed > 60)
+        {
+            return false;
+        }
+        else if (secondsPassed <= 60)
+        {
+            //print second numbers
+        }
+    }
+}
 
 #endif /* Graphics_h */
