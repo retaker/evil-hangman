@@ -396,7 +396,7 @@ void MainMenu(SDL_Plotter& plotter, int level, bool music, int pointer)
 	int r4 = 0, g4 = 0, b4 = 0;
 	int r5 = 0, g5 = 0, b5 = 0;
 
-	Point Menu = Point(780, 50, 0, 0, 0);
+	Point Menu = Point(575, 50, 0, 0, 0);
 	putString("Menu", Menu, 9, plotter);
 
 	if (pointer == 1) {
@@ -424,18 +424,18 @@ void MainMenu(SDL_Plotter& plotter, int level, bool music, int pointer)
 		b5 = 169;
 		g5 = 169;
 	}
-	Point OpStart = Point(810, 180, r1, g1, b1);
+	Point OpStart = Point(600, 180, r1, g1, b1);
 	putString("Start", OpStart, 5, plotter);
 
-	Point OpLevel = Point(810, 250, r2, g2, b2);
+	Point OpLevel = Point(600, 250, r2, g2, b2);
 	putString("Level", OpLevel, 5, plotter);
-	Point diff = Point(1015, 255, r2, g2, b2);
+	Point diff = Point(815, 255, r2, g2, b2);
 	if (level == 4) {
 		putString("EASY", diff, 4, plotter);
-		Point lefttemp1 = Point(1000, 250, r2, g2, b2);
-		Point lefttemp2 = Point(980, 265, r2, g2, b2);
-		Point righttemp1 = Point(1120, 250, r2, g2, b2);
-		Point righttemp2 = Point(1140, 265, r2, g2, b2);
+		Point lefttemp1 = Point(800, 250, r2, g2, b2);
+		Point lefttemp2 = Point(780, 265, r2, g2, b2);
+		Point righttemp1 = Point(920, 250, r2, g2, b2);
+		Point righttemp2 = Point(940, 265, r2, g2, b2);
 		drawLeftLimb(lefttemp1, 20, plotter);
 		drawRightLimb(lefttemp2, 20, plotter);
 		drawLeftLimb(righttemp2, 20, plotter);
@@ -443,10 +443,10 @@ void MainMenu(SDL_Plotter& plotter, int level, bool music, int pointer)
 	}
 	else if (level == 5) {
 		putString("Normal", diff, 4, plotter);
-		Point lefttemp1 = Point(1000, 250, r2, g2, b2);
-		Point lefttemp2 = Point(980, 265, r2, g2, b2);
-		Point righttemp1 = Point(1160, 250, r2, g2, b2);
-		Point righttemp2 = Point(1180, 265, r2, g2, b2);
+		Point lefttemp1 = Point(800, 250, r2, g2, b2);
+		Point lefttemp2 = Point(780, 265, r2, g2, b2);
+		Point righttemp1 = Point(960, 250, r2, g2, b2);
+		Point righttemp2 = Point(980, 265, r2, g2, b2);
 		drawLeftLimb(lefttemp1, 20, plotter);
 		drawRightLimb(lefttemp2, 20, plotter);
 		drawLeftLimb(righttemp2, 20, plotter);
@@ -454,24 +454,24 @@ void MainMenu(SDL_Plotter& plotter, int level, bool music, int pointer)
 	}
 	else if (level == 6) {
 		putString("Hard", diff, 4, plotter);
-		Point lefttemp1 = Point(1000, 250, r2, g2, b2);
-		Point lefttemp2 = Point(980, 265, r2, g2, b2);
-		Point righttemp1 = Point(1120, 250, r2, g2, b2);
-		Point righttemp2 = Point(1140, 265, r2, g2, b2);
+		Point lefttemp1 = Point(800, 250, r2, g2, b2);
+		Point lefttemp2 = Point(780, 265, r2, g2, b2);
+		Point righttemp1 = Point(920, 250, r2, g2, b2);
+		Point righttemp2 = Point(940, 265, r2, g2, b2);
 		drawLeftLimb(lefttemp1, 20, plotter);
 		drawRightLimb(lefttemp2, 20, plotter);
 		drawLeftLimb(righttemp2, 20, plotter);
 		drawRightLimb(righttemp1, 20, plotter);
 	}
-	Point Opmusic = Point(810, 320, r3, g3, b3);
+	Point Opmusic = Point(600, 320, r3, g3, b3);
 	putString("MUSIC", Opmusic, 5, plotter);
-	Point Status = Point(1020, 325, r3, g3, b3);
+	Point Status = Point(820, 325, r3, g3, b3);
 	if (music == true) {
 		putString("On", Status, 4, plotter);
-		Point lefttemp1 = Point(1000, 320, r3, g3, b3);
-		Point lefttemp2 = Point(980, 335, r3, g3, b3);
-		Point righttemp1 = Point(1080, 320, r3, g3, b3);
-		Point righttemp2 = Point(1100, 335, r3, g3, b3);
+		Point lefttemp1 = Point(800, 320, r3, g3, b3);
+		Point lefttemp2 = Point(780, 335, r3, g3, b3);
+		Point righttemp1 = Point(880, 320, r3, g3, b3);
+		Point righttemp2 = Point(900, 335, r3, g3, b3);
 		drawLeftLimb(lefttemp1, 20, plotter);
 		drawRightLimb(lefttemp2, 20, plotter);
 		drawLeftLimb(righttemp2, 20, plotter);
@@ -480,19 +480,19 @@ void MainMenu(SDL_Plotter& plotter, int level, bool music, int pointer)
 	else if (music == false) 
 	{
 		putString("Off", Status, 4, plotter);
-		Point lefttemp1 = Point(1000, 320, r3, g3, b3);
-		Point lefttemp2 = Point(980, 335, r3, g3, b3);
-		Point righttemp1 = Point(1100, 320, r3, g3, b3);
-		Point righttemp2 = Point(1120, 335, r3, g3, b3);
+		Point lefttemp1 = Point(800, 320, r3, g3, b3);
+		Point lefttemp2 = Point(780, 335, r3, g3, b3);
+		Point righttemp1 = Point(900, 320, r3, g3, b3);
+		Point righttemp2 = Point(920, 335, r3, g3, b3);
 		drawLeftLimb(lefttemp1, 20, plotter);
 		drawRightLimb(lefttemp2, 20, plotter);
 		drawLeftLimb(righttemp2, 20, plotter);
 		drawRightLimb(righttemp1, 20, plotter);
 	}
-	Point Opplayers = Point(810, 390, r4, g4, b4);
+	Point Opplayers = Point(600, 390, r4, g4, b4);
 	putString("Players", Opplayers, 5, plotter);
 
-	Point Opexit = Point(810, 460, r5, g5, b5);
+	Point Opexit = Point(600, 460, r5, g5, b5);
 	putString("EXIT", Opexit, 5, plotter);
 }
 
