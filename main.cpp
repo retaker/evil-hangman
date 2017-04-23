@@ -16,9 +16,10 @@ int main(int argc, char ** argv)
     
     while (!thePlot.getQuit()) {
         
-        drawRightLimb(p1, 100, thePlot);
-        drawLeftLimb(p1, 100, thePlot);
+        // drawRightLimb(p1, 100, thePlot);
+        // drawLeftLimb(p1, 100, thePlot);
 
+        drawMan(p1, 50, thePlot);
         // drawHead(p1, 100, thePlot);
         
         // drawLine(p1, p2, thePlot);

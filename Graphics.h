@@ -28,7 +28,6 @@ void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
     m = (p2.y-p1.y)/(p2.x-p1.x);
     b = p2.y-(m*p2.x);
     
-    
     // Picking = 0 the starting and ending y values
     
     if(p1.y < p2.y) {
@@ -41,8 +40,8 @@ void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
                 // Calcuating the m & b for y = mx + b for individual points,
                 // to see if they are on the line
                 double approximateM, approximateB;
-                approximateM = (p2.y-(p1.y+j))/(p2.x-(p1.x+i));
-                approximateB = (p1.y+j)-(m*(p1.x+i));
+                approximateM = (p2.y-j)/(p2.x-(i));
+                approximateB = (j)-(m*(i));
                 
                 // Checking the differnce between the actual m & b and the
                 // approximate m & b
@@ -56,7 +55,7 @@ void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
                     ((differenceB < lineWidth && differenceB > -1*lineWidth))){
                     
                     // Plotting the individual points on the
-                    plotter.plotPixel(p1.x + i, p1.y + j, p1.R, p1.G, p1.B);
+                    plotter.plotPixel(i, j, p1.R, p1.G, p1.B);
                 }
                 
             } // If the point isn't at the end point
@@ -65,19 +64,20 @@ void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
         
     } // Outside for loop
     }
-    
     else {
         // Printing the line
         for (int i = p1.x; i < p2.x  && p1.x + i < plotter.getCol(); i++) {
-            for (int j = p1.y; j > p2.y && p1.y - j > 0; j--) {
+            for (int j = p1.y; j > p2.y && p1.y - j < plotter.getRow(); j--) {
                 
                 if (p1.x + i != p2.x && p1.y + j != p2.y) {
+                    
                     
                     // Calcuating the m & b for y = mx + b for individual points,
                     // to see if they are on the line
                     double approximateM, approximateB;
-                    approximateM = (p2.y-(p1.y+j))/(p2.x-(p1.x+i));
-                    approximateB = (p1.y+j)-(m*(p1.x+i));
+                    approximateM = (p2.y-j)/(p2.x-i);
+                    approximateB = (j)-(m*(i));
+                    
                     
                     // Checking the differnce between the actual m & b and the
                     // approximate m & b
@@ -85,13 +85,15 @@ void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
                     differenceM = m - approximateM;
                     differenceB = b - approximateB;
                     
+                    
+                    
                     int lineWidth = 10;
                     // Adjust the Differences to set the width of the line
                     if ((differenceM < lineWidth && differenceM > -1*lineWidth) &&
                         ((differenceB < lineWidth && differenceB > -1*lineWidth))){
                         
                         // Plotting the individual points on the
-                        plotter.plotPixel(p1.x + i, p1.y + j, p1.R, p1.G, p1.B);
+                        plotter.plotPixel(i, j, p2.R, p2.G, p2.B);
                     }
                     
                 } // If the point isn't at the end point
@@ -146,7 +148,7 @@ void drawRectangle(Point p, int height, int width, SDL_Plotter& plotter) {
                 i + 1 >= width - (lineWidth-1) ||
                 j + 1 >= height - (lineWidth-1)) {
                 
-                plotter.plotPixel(p.x + i, p.y + j, 256, 256, 256);
+                plotter.plotPixel(p.x + i, p.y + j, p.R, p.G, p.B);
                 
             }
             
@@ -306,6 +308,26 @@ void drawLeftLimb(Point p, int size, SDL_Plotter& plotter) {
 
 void drawMan(Point p, int size, SDL_Plotter& plotter) {
     
+    int lineWidth = 10;
+    // Drawing the head at the top left of the points
+    drawHead(p, size, plotter);
+    
+    // Drawing the arms of the man
+    // Creating the arm point of the man
+    Point arms(p.x + size*(1.05), p.y+size*2.5);
+    drawLeftLimb(arms, size, plotter);
+    drawRightLimb(arms, size, plotter);
+    
+    // Drawing the legs of the man
+    // Creating the left point of the man
+    Point legs(arms.x, p.y + (4)*(size));
+    drawRightLimb(legs, size, plotter);
+    drawLeftLimb(legs, size, plotter);
+    
+    // Drawing the spine of the man
+    // Creating the spine starting point
+    Point spine(p.x + (19.0/20)*size, p.y + 1.9*(size));
+    plotVerticalLine(spine, size*2.5, lineWidth, plotter);
 }
 
 
