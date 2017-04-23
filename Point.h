@@ -5,7 +5,7 @@
 #include <cstring>
 #include "SDL_Plotter.h"
 
-int fonts[26][5][7];
+int fonts[37][5][7];
 
 struct Point {
 	int x, y;
@@ -40,13 +40,17 @@ void plotSquare(int x, int y, int size, SDL_Plotter& plotter) {
 
 void plotLetter(char letter, Point p, int size, SDL_Plotter& plotter) {
 	int pos = (int)letter;
-	if (pos > 90) {
-		pos -= 97;
+	if (pos > 96 && pos < 123) {
+		pos -= 87;
 	}
-	else {
-		pos -= 65;
+	else if(pos > 64 && pos < 91) {
+		pos -= 55;
+	}else if(pos == 34){
+		pos = 36;
+	}else{
+		pos -= 48;
 	}
-	if (pos < 0 || pos>25) {
+	if (pos < 0 || pos>36) {
 		return;
 	}
 
@@ -78,9 +82,9 @@ bool loadFont(char* fileName) {
 		return false;
 	}
 
-	for (int i = 0;i < 26;i++) {
-		for (int y = 0;y < 7;y++) {
-			for (int x = 0;x < 5;x++) {
+	for (int i = 0; i < 37; i++) {
+		for (int y = 0; y < 7; y++) {
+			for (int x = 0; x < 5; x++) {
 				input >> fonts[i][x][y];
 			}
 		}

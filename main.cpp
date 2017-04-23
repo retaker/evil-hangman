@@ -27,12 +27,16 @@ int main(int argc, char ** argv)
 	}
 	*/
 	Point p1 = Point(100, 100, 255, 255, 255);
+	Point p2 = Point(100, 300, 255, 255, 255);
+	Point p3 = Point(100, 500, 255, 255, 255);
 	while (!g.getQuit()) {
 		if (g.kbhit()) {
 			g.getKey();
 			g.clear();
 		}
-		putString("Hello World", p1, 2, g);
+		putString("\"abcdefghijklmnopqrstuvwxyz\"", p1, 4, g);
+		putString("\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"", p2, 4, g);
+		putString("\"0123456789\"", p3, 4, g);
 		g.update();
 	}
 	return 0;
