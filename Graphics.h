@@ -6,19 +6,48 @@
 //  Copyright © 2017 Hayden Householder. All rights reserved.
 //
 
-
-#include <iostream>
-#include <fstream>
-#include "SDL_Plotter.h"
-#include "Point.h"
-
 #ifndef Graphics_h
 #define Graphics_h
 
-void plotSquare(Point p, int size, SDL_Plotter& plotter);
+#include <iostream>
+#include <fstream>
+#include <string>
+#include "SDL_Plotter.h"
+
+int fonts[37][5][7];
+
+struct Point {
+    int x, y;
+    int R, G, B;
+    
+    Point(int nx = 0, int ny = 0, int nR = 0, int nG = 0, int nB = 0) {
+        x = nx;
+        y = ny;
+        R = nR;
+        G = nG;
+        B = nB;
+    }
+    
+    void setColor(int nR = 255, int nG = 255, int nB = 255) {
+        R = nR;
+        G = nG;
+        B = nB;
+    }
+};
 
 
-/****                SIMPLE DRAWING FUNCTIONS               *******/
+
+void plotSquare(Point p, int size, SDL_Plotter& plotter) {
+    
+    // Plotting the square
+    for (int i = 0; i < size && p.x + i < plotter.getCol(); i++) {
+        for (int j = 0; j < size && p.y + j < plotter.getRow(); j++) {
+            plotter.plotPixel(p.x + i, p.y + j, p.R, p.G, p.B);
+        }
+    }
+}
+
+/****           SIMPLE DRAWING FUNCTIONS               *******/
 
 // Function that draws a line between two points
 void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
@@ -32,8 +61,8 @@ void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
     
     if(p1.y < p2.y) {
     // Printing the line
-    for (int i = p1.x; i < p2.x  && p1.x + i < plotter.getCol(); i++) {
-        for (int j = p1.y; j < p2.y && p1.y + j < plotter.getRow(); j++) {
+    for (int i = p1.x; i < p2.x  && i < plotter.getCol(); i++) {
+        for (int j = p1.y; j < p2.y && j < plotter.getRow(); j++) {
             
             if (p1.x + i != p2.x && p1.y + j != p2.y) {
                 
@@ -66,8 +95,8 @@ void drawLine(Point p1, Point p2, SDL_Plotter& plotter) {
     }
     else {
         // Printing the line
-        for (int i = p1.x; i < p2.x  && p1.x + i < plotter.getCol(); i++) {
-            for (int j = p1.y; j > p2.y && p1.y - j < plotter.getRow(); j--) {
+        for (int i = p1.x; i < p2.x  &&  i < plotter.getCol(); i++) {
+            for (int j = p1.y; j > p2.y &&  j < plotter.getRow(); j--) {
                 
                 if (p1.x + i != p2.x && p1.y + j != p2.y) {
                     
@@ -159,54 +188,59 @@ void drawRectangle(Point p, int height, int width, SDL_Plotter& plotter) {
 }
 
 void plotLetter(char letter, Point p, int size, SDL_Plotter& plotter) {
-    
-    // Getting the letter file to be read in
-    ifstream input;
-    string fileName = ".txt";
-    
-    // Finalizing the file name to be read in
-    fileName.insert(0, 1, letter);
-
-    // Opening the particular letter file to be read in
-    input.open(fileName);
-    cout << fileName << endl;
-    
-    int theLetter [7][5];
-   
-    int readInteger = 0;
-    
-    // Reading in the letter to a 2-D array
-    for (int j = 0; j < 7; j++) {
-        for (int i = 0; i < 5; i++) {
-            
-            input >> readInteger;
-            
-            theLetter[j][i] = readInteger;
-            
-            cout << readInteger << " ";
-            
-            if (readInteger == 1) {
-             //   plotSquare(p.x + (i*size), p.y + (j*size), size, plotter);
-            }
-            
-        }
-        cout << endl;
+    int pos = (int)letter;
+    if (pos > 96 && pos < 123) {
+        pos -= 87;
     }
-    
-    input.close();
-    
+    else if (pos > 64 && pos < 91) {
+        pos -= 55;
+    }
+    else if (pos == 34) {
+        pos = 36;
+    }
+    else {
+        pos -= 48;
+    }
+    if (pos < 0 || pos>36) {
+        return;
+    }
+    Point tmp = p;
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 7; j++) {
+            if (fonts[pos][i][j] == 1) {
+                tmp.x = p.x + i*size;
+                tmp.y = p.y + j*size;
+                plotSquare(tmp, size, plotter);
+            }
+        }
+    }
 }
 
+void putString(string str, Point p, int size, SDL_Plotter& plotter) {
+    int length = str.length();
+    for (int i = 0;i < length;i++) {
+        plotLetter(str[i], p, size, plotter);
+        p.x = p.x + size * 6;
+    }
+}
 
-// Function that plots a square, can be used to allow different size fonts
-void plotSquare(Point p, int size, SDL_Plotter& plotter) {
+bool loadFont(char* fileName) {
+    ifstream input;
+    input.open(fileName);
     
-    // Plotting the square
-    for (int i = 0; i < size && p.x + i < plotter.getCol(); i++) {
-        for (int j = 0; j < size && p.y + j < plotter.getRow(); j++) {
-            plotter.plotPixel(p.x + i, p.y + j, p.R, p.G, p.B);
+    if (!input) {
+        return false;
+    }
+    
+    for (int i = 0; i < 37; i++) {
+        for (int y = 0; y < 7; y++) {
+            for (int x = 0; x < 5; x++) {
+                input >> fonts[i][x][y];
+            }
         }
     }
+    input.close();
+    return true;
 }
 
 // Prints a veritcal line starting at point p1 with a given height and size

@@ -6,20 +6,21 @@
 
 using namespace std;
 
-SDL_Plotter thePlot(1000, 1000);
+SDL_Plotter thePlot(720, 1280);
 
 int main(int argc, char ** argv)
 {
     
     
-    Point p1(103, 100), p2(300, 200), p3(200, 400), p4(200, 600), p5(600, 300);
+    Point p1(100, 100), p2(300, 200), p3(200, 400), p4(550, 300), p5(600, 300);
     
     while (!thePlot.getQuit()) {
         
         // drawRightLimb(p1, 100, thePlot);
         // drawLeftLimb(p1, 100, thePlot);
 
-        drawMan(p1, 50, thePlot);
+        drawMan(p5, 50, thePlot);
+        drawShelf(p1, 100, thePlot);
         // drawHead(p1, 100, thePlot);
         
         // drawLine(p1, p2, thePlot);
