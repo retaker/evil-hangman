@@ -26,14 +26,12 @@ struct Point {
 	}
 };
 
-void plotSquare(int x, int y, int size, SDL_Plotter& plotter) {
+void plotSquare(Point p, int size, SDL_Plotter& plotter) {
 
 	// Plotting the square
-	for (int i = 0; i < size && x + i < plotter.getCol(); i++) {
-		for (int j = 0; j < size && y + j < plotter.getRow(); j++) {
-
-			plotter.plotPixel(x + i, y + j, 256, 256, 256);
-
+	for (int i = 0; i < size && p.x + i < plotter.getCol(); i++) {
+		for (int j = 0; j < size && p.y + j < plotter.getRow(); j++) {
+			plotter.plotPixel(p.x + i, p.y + j, p.R, p.G, p.B);
 		}
 	}
 }
@@ -53,15 +51,15 @@ void plotLetter(char letter, Point p, int size, SDL_Plotter& plotter) {
 	if (pos < 0 || pos>36) {
 		return;
 	}
-
+	Point tmp = p;
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 7; j++) {
 			if (fonts[pos][i][j] == 1) {
-				plotSquare(p.x + (i*size), p.y + (j*size), size, plotter);
+				tmp.x = p.x + i*size;
+				tmp.y = p.y + j*size;
+				plotSquare(tmp, size, plotter);
 			}
-
 		}
-		cout << endl;
 	}
 
 }
