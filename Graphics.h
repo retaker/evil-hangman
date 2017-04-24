@@ -15,6 +15,7 @@
 #include "SDL_Plotter.h"
 
 int fonts[37][5][7];
+const int USERS_ON_LEADERBOARD = 5;
 
 struct Point {
     int x, y;
@@ -366,6 +367,82 @@ void drawMan(Point p, int size, SDL_Plotter& plotter) {
     plotVerticalLine(spine, size*2.5, lineWidth, plotter);
 }
 
+
+/*****              Recording and Reading Scores        *****/
+
+void readHighScores(string users[USERS_ON_LEADERBOARD], int scores[USERS_ON_LEADERBOARD]) {
+    
+    // Creating & opening the file stream to read the high scores from
+    ifstream highScores;
+    highScores.open("Highscores.txt");
+    
+    // User names and number of users displayed on the leaderboard
+    string userNames[USERS_ON_LEADERBOARD];
+    int userScores[USERS_ON_LEADERBOARD];
+    
+    // Reading in the users names as well as their individual scores
+    for (int i = 0; i < USERS_ON_LEADERBOARD; i++) {
+        highScores >> users[i];
+        highScores >> scores[i];
+    }
+    
+    // Closing the file stream
+    highScores.close();
+}
+
+void updateHighScores(string users[], int scores[]) {
+    
+    // Creating a new output stream to the Highscores.txt
+    ofstream highScores;
+    highScores.open("Highscores.txt", ios::trunc);
+    
+    // Outputting the users and scores to the output filestream
+    for (int i = 0; i < USERS_ON_LEADERBOARD; i++) {
+        highScores << users[i] << scores[i];
+    }
+}
+
+
+void recordHighScore(string userName, int theHighScore) {
+    
+    string theUsers[USERS_ON_LEADERBOARD];
+    int theScores[USERS_ON_LEADERBOARD];
+    bool highScore = false;
+    
+    readHighScores(theUsers, theScores);
+    
+    int i;
+    for(i = 0; i < USERS_ON_LEADERBOARD && !highScore; i++) {
+        
+        // Checking to see if the score makes it in the top five
+        if (theHighScore > theScores[i]) {
+            highScore = true;
+        }
+    
+    }
+    
+    // Getting the actual location of the high score
+    i--;
+    
+    // Putting the high score in the list and moving the rest down the list
+    if (highScore) {
+        
+        // Inserting the user and their score in the correct position and moving
+        // the rest of the users and their scores down
+        while (i < USERS_ON_LEADERBOARD) {
+            
+            swap(userName, theUsers[i]);
+            swap(theHighScore, theScores[i]);
+            
+            i++;
+        }
+        
+        updateHighScores(theUsers, theScores);
+    }
+    
+}
+
+
 void DefaultScreen(SDL_Plotter& plotter)
 {
     Point P1 = Point(280, 50, 0, 0, 0);
@@ -509,18 +586,14 @@ void GameOver(SDL_Plotter& plotter)
     Point End = Point(450, 550, 0, 0, 0);
     putString("Press Esc to exit", End, 4, plotter);
 }
-void WonScreen(SDL_Plotter&plotter,int namePosition)
-{
-    Point Title = Point(400, 50, 0, 0, 0);
-    putString("YOU WON", Title, 10, plotter);
-    Point Score = Point(400, 200, 0, 0, 0);
-    putString("Your Score", Score, 6, plotter);
-    Point Msg = Point(400, 300, 0, 0, 0);
-    putString("Please Type your name", Msg, 6,plotter);
+
+void userNameSpaces(SDL_Plotter& plotter, Point firstLine, int namePosition){
+    
     int r1=0, g1=0, b1=0;
     int r2=0, g2=0, b2=0;
     int r3=0, g3=0, b3=0;
     int r4=0, g4=0, b4=0;
+    
     if (namePosition == 1) {
         r1 = 169;
         g1 = 169;
@@ -531,31 +604,83 @@ void WonScreen(SDL_Plotter&plotter,int namePosition)
         g2 = 169;
         b2 = 169;
     }
-    else if (namePosition == 2) {
+    else if (namePosition == 3) {
         r3 = 169;
         g3 = 169;
         b3 = 169;
     }
-    else if (namePosition == 2) {
+    else if (namePosition == 4) {
         r4 = 169;
         g4 = 169;
         b4 = 169;
     }
-    Point line1 = Point(400, 450, r1, g1, b1);
-    Point line2 = Point(550, 450, r2, g2, b2);
-    Point line3 = Point(700, 450, r3, g3, b3);
-    Point line4 = Point(850, 450, r4, g4, b4);
-    plotHorizontalLine(line1, 50, 4, plotter);
-    plotHorizontalLine(line2, 50, 4, plotter);
-    plotHorizontalLine(line3, 50, 4, plotter);
-    plotHorizontalLine(line4, 50, 4, plotter);
+    
+    // Creating the dimensions of the line
+    const int LINE_SPACE = 150;
+    const int LINE_THICKNESS = 4;
+    const int LINE_LENGTH = 50;
+    
+    Point line1 = Point(firstLine.x, firstLine.y, r1, g1, b1);
+    Point line2 = Point(firstLine.x + LINE_SPACE, firstLine.y, r2, g2, b2);
+    Point line3 = Point(firstLine.x + (LINE_SPACE*2), firstLine.y, r3, g3, b3);
+    Point line4 = Point(firstLine.x + (LINE_SPACE*3), firstLine.y, r4, g4, b4);
+    
+    
+    plotHorizontalLine(line1, LINE_LENGTH, LINE_THICKNESS, plotter);
+    plotHorizontalLine(line2, LINE_LENGTH, LINE_THICKNESS, plotter);
+    plotHorizontalLine(line3, LINE_LENGTH, LINE_THICKNESS, plotter);
+    plotHorizontalLine(line4, LINE_LENGTH, LINE_THICKNESS, plotter);
+}
+
+void WonScreen(SDL_Plotter& plotter)
+{
+    // Displaying the messages to the user as well as the points
+    Point Title = Point(400, 50, 0, 0, 0);
+    putString("YOU WON", Title, 10, plotter);
+    Point Score = Point(400, 200, 0, 0, 0);
+    putString("Your Score", Score, 6, plotter);
+    Point Msg = Point(400, 300, 0, 0, 0);
+    putString("Please Type your name", Msg, 6,plotter);
+    
+    // Drawing the shelf
     Point RopeBotton(125, 190, 0, 0, 0);
     drawShelf(RopeBotton, 75, plotter);
+    
+    // Displaying the options to the user
     Point Restart = Point(400, 500, 0, 0, 0);
     putString("Press B to Menu", Restart, 4, plotter);
     Point End = Point(400, 550, 0, 0, 0);
     putString("Press Esc to exit", End, 4, plotter);
+    
+    // Printing the lines for the user to print their name
+    Point firstLine(400, 450);
+    string userName;
+    int userScore = 100;
+    int namePosition = 1;
+
+    userNameSpaces(plotter, firstLine, namePosition);
+    plotter.update();
+    
+    // Getting the characters that the user inputs for their name
+    while (namePosition < 5) {
+        if (plotter.kbhit()) {
+            char input = plotter.getKey();
+            
+            userName += input;
+            
+            userNameSpaces(plotter, firstLine, ++namePosition);
+            
+            plotter.update();
+        }
+    } // End of while
+    
+    // Passing on the userName of the Highscore to the .txt file
+    recordHighScore(userName, userScore);
+    
 }
+
+    
+
 
 void GamingScreen(SDL_Plotter& plotter, int level)
 {
