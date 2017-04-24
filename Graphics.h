@@ -398,7 +398,7 @@ void updateHighScores(string users[], int scores[]) {
     
     // Outputting the users and scores to the output filestream
     for (int i = 0; i < USERS_ON_LEADERBOARD; i++) {
-        highScores << users[i] << scores[i];
+        highScores << users[i] << " " << scores[i] << endl;
     }
 }
 
@@ -655,7 +655,7 @@ void WonScreen(SDL_Plotter& plotter)
     // Printing the lines for the user to print their name
     Point firstLine(400, 450);
     string userName;
-    int userScore = 100;
+    int userScore = 80;
     int namePosition = 1;
 
     userNameSpaces(plotter, firstLine, namePosition);
