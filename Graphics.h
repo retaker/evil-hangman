@@ -384,7 +384,7 @@ void DefaultScreen(SDL_Plotter& plotter)
 	drawMan(ManPostion, 50, plotter);
 }
 
-void MainMenu(SDL_Plotter& plotter, int level, bool music, int pointer) 
+void MainMenu(SDL_Plotter& plotter, int level, bool music, int pointer)
 {
 	Point ManPostion = Point(300, 200, 0, 0, 0);
 	Point RopeBotton(200, 175, 0, 0, 0);
@@ -477,7 +477,7 @@ void MainMenu(SDL_Plotter& plotter, int level, bool music, int pointer)
 		drawLeftLimb(righttemp2, 20, plotter);
 		drawRightLimb(righttemp1, 20, plotter);
 	}
-	else if (music == false) 
+	else if (music == false)
 	{
 		putString("Off", Status, 4, plotter);
 		Point lefttemp1 = Point(800, 320, r3, g3, b3);
@@ -496,7 +496,7 @@ void MainMenu(SDL_Plotter& plotter, int level, bool music, int pointer)
 	putString("EXIT", Opexit, 5, plotter);
 }
 
-void GameOver(SDL_Plotter& plotter) 
+void GameOver(SDL_Plotter& plotter)
 {
 	Point ManPostion = Point(225, 290, 0, 0, 0);
 	Point RopeBotton(125, 190, 0, 0, 0);
@@ -511,18 +511,18 @@ void GameOver(SDL_Plotter& plotter)
 	Point End = Point(450, 550, 0, 0, 0);
 	putString("Press Esc to exit", End, 4, plotter);
 }
-void WonScreen(SDL_Plotter&plotter,int namePosition) 
+void WonScreen(SDL_Plotter&plotter, int namePosition)
 {
 	Point Title = Point(400, 50, 0, 0, 0);
 	putString("YOU WON", Title, 10, plotter);
 	Point Score = Point(400, 200, 0, 0, 0);
 	putString("Your Score", Score, 6, plotter);
 	Point Msg = Point(400, 300, 0, 0, 0);
-	putString("Please Type your name", Msg, 6,plotter);
-	int r1=0, g1=0, b1=0;
-	int r2=0, g2=0, b2=0;
-	int r3=0, g3=0, b3=0;
-	int r4=0, g4=0, b4=0;
+	putString("Please Type your name", Msg, 6, plotter);
+	int r1 = 0, g1 = 0, b1 = 0;
+	int r2 = 0, g2 = 0, b2 = 0;
+	int r3 = 0, g3 = 0, b3 = 0;
+	int r4 = 0, g4 = 0, b4 = 0;
 	if (namePosition == 1) {
 		r1 = 169;
 		g1 = 169;
@@ -559,20 +559,44 @@ void WonScreen(SDL_Plotter&plotter,int namePosition)
 	putString("Press Esc to exit", End, 4, plotter);
 }
 
-void GamingScreen(SDL_Plotter& plotter, int level) 
+void GamingScreen(SDL_Plotter& plotter, int level)
 {
 	Point ManPostion = Point(300, 275, 0, 0, 0);
 	Point RopeBotton(200, 175, 0, 0, 0);
 	drawShelf(RopeBotton, 75, plotter);
 	drawMan(ManPostion, 50, plotter);
-	Point Msg = Point(550, 300, 250, 0, 0);
+	Point Msg = Point(550, 200, 250, 0, 0);
 	putString("Please guess possiable letters in this word", Msg, 2, plotter);
 	int x = 550;
 	int y = 550;
-	for (int i = 0; i < level; i++) {
+	for (int i = 0; i <level; i++) {
 		Point line = Point(x, y, 0, 0, 0);
 		plotHorizontalLine(line, 50, 4, plotter);
 		x += 100;
+	}
+	Point Hint = Point(1000, 25, 255, 0, 0);
+	putString("Press 1 to back", Hint, 2, plotter);
+}
+
+void ScoreBoard(SDL_Plotter& plotter) 
+{
+	Point ManPostion = Point(300, 275, 0, 0, 0);
+	Point RopeBotton(200, 175, 0, 0, 0);
+	drawShelf(RopeBotton, 75, plotter);
+	drawMan(ManPostion, 50, plotter);
+	Point userID = Point(650, 100, 0, 0, 0);
+	putString("USER ID", userID, 4, plotter);
+	Point Score = Point(950, 100, 0, 0, 0);
+	putString("SCORE", Score, 4, plotter);
+	int Num = 1;
+	int x = 500, y = 200;
+	for (int i = 0;i < 5;i++) 
+	{
+		Point List(x, y, 0, 0, 0);
+		string strnum = to_string(Num);
+		putString(strnum, List, 4, plotter);
+		Num++;
+		y = y + 80;
 	}
 }
 
