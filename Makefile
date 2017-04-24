@@ -1,4 +1,4 @@
-OPTIONS = -lSDL2main -lSDL2 -lSDL2_mixer
+OPTIONS = -lSDL2main -lSDL2 -lSDL2_mixer -lmingw32
 OBJECTS = main.o
 
 main: $(OBJECTS)
