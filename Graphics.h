@@ -14,9 +14,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <ctime>
 #include "SDL_Plotter.h"
 
-int fonts[37][5][7];
+int fonts[38][5][7];
 
 struct Point {
 	int x, y;
@@ -200,10 +201,13 @@ void plotLetter(char letter, Point p, int size, SDL_Plotter& plotter) {
 	else if (pos == 34) {
 		pos = 36;
 	}
+	else if(pos == 58){
+		pos = 37;
+	}
 	else {
 		pos -= 48;
 	}
-	if (pos < 0 || pos>36) {
+	if (pos < 0 || pos>37) {
 		return;
 	}
 	Point tmp = p;
@@ -234,7 +238,7 @@ bool loadFont(char* fileName) {
 		return false;
 	}
 
-	for (int i = 0; i < 37; i++) {
+	for (int i = 0; i < 38; i++) {
 		for (int y = 0; y < 7; y++) {
 			for (int x = 0; x < 5; x++) {
 				input >> fonts[i][x][y];
@@ -564,18 +568,27 @@ void GamingScreen(SDL_Plotter& plotter, int level)
 	Point ManPostion = Point(300, 275, 0, 0, 0);
 	Point RopeBotton(200, 175, 0, 0, 0);
 	drawShelf(RopeBotton, 75, plotter);
-	drawMan(ManPostion, 50, plotter);
+	//drawMan(ManPostion, 50, plotter);
 	Point Msg = Point(550, 200, 250, 0, 0);
-	putString("Please guess possiable letters in this word", Msg, 2, plotter);
+	putString("Please guess possible letters in this word", Msg, 2, plotter);
 	int x = 550;
 	int y = 550;
-	for (int i = 0; i <level; i++) {
+	int lineNumbers = level;
+
+	if (level == 5) {
+		lineNumbers = 7;
+	}
+
+	else if (level == 6) {
+		lineNumbers = 8;
+	}
+
+	// Printing the lines for the correct letters to be printed on
+	for (int i = 0; i <lineNumbers; i++) {
 		Point line = Point(x, y, 0, 0, 0);
 		plotHorizontalLine(line, 50, 4, plotter);
-		x += 100;
+		x += 70;
 	}
-	Point Hint = Point(1000, 25, 255, 0, 0);
-	putString("Press 1 to back", Hint, 2, plotter);
 }
 
 void ScoreBoard(SDL_Plotter& plotter) 
