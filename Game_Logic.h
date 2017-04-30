@@ -1,3 +1,9 @@
+//
+//  Game_Logic.h
+//  EvilHangman
+//
+//  Created by Infinite Loop on 4/22/17.
+
 #ifndef GAME_LOGIC_H
 #define GAME_LOGIC_H
 
