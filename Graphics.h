@@ -377,6 +377,33 @@ void drawMan(Point p, int size, SDL_Plotter& plotter) {
 	plotVerticalLine(spine, size*2.5, lineWidth, plotter);
 }
 
+void drawMan(Point &p, int size, SDL_Plotter& plotter, int step) {
+	int lineWidth = 10;
+	Point spine(p.x + (19.0 / 20)*size, p.y + 1.9*(size));
+	Point arms(p.x + size*(1.05), p.y + size*2.5);
+	Point legs(arms.x, p.y + (4)*(size));
+	if (step >= 7) {
+		p.setColor(255, 0, 0);
+		spine.setColor(255, 0, 0);
+		arms.setColor(255, 0, 0);
+		legs.setColor(255, 0, 0);
+	}
+	switch (step) {
+	case 1: drawHead(p, size, plotter); break;
+	case 2: plotVerticalLine(spine, size*2.5, lineWidth, plotter); break;
+	case 3: drawLeftLimb(arms, size, plotter); break;
+	case 4: drawRightLimb(arms, size, plotter); break;
+	case 5: drawRightLimb(legs, size, plotter); break;
+	case 6: drawLeftLimb(legs, size, plotter); break;
+	case 7: drawHead(p, size, plotter); break;
+	case 8: plotVerticalLine(spine, size*2.5, lineWidth, plotter); break;
+	case 9: drawLeftLimb(arms, size, plotter); break;
+	case 10: drawRightLimb(arms, size, plotter); break;
+	case 11: drawRightLimb(legs, size, plotter); break;
+	case 12: drawLeftLimb(legs, size, plotter); break;
+	}
+}
+
 /*****              Recording and Reading Scores        *****/
 
 void readHighScores(string users[USERS_ON_LEADERBOARD], int scores[USERS_ON_LEADERBOARD]) {
