@@ -10,10 +10,15 @@
 #include "Graphics.h"
 
 const int FOUR_LETTER_WORDS = 3862;
-//const int SIX_LETTER_WORDS = 14383;
 const int SEVEN_LETTER_WORDS = 21730;
 const int EIGHT_LETTER_WORDS = 26448;
 
+/*
+ * description: This function reads in all words that are 4 7 and 8 characters long
+ * return: void                                         
+ * precondition: dict, word, and temp are valid                            
+ * postcondition: temp has all the string that are 4 7 and 8 characters long
+ */
 void readIn(fstream &dict, string word, vector<string> &temp) {
 	int i = 0;
 	while (getline(dict, word)) {
@@ -24,6 +29,12 @@ void readIn(fstream &dict, string word, vector<string> &temp) {
 	}
 }
 
+/*
+ * description: This function selects the difficulty based on the level input
+ * return: void                                         
+ * precondition: level, length, maxIncorrect and wordList are valid                           
+ * postcondition: length, size of wordList and maxIncorrect are set
+ */
 void selectDiff(int &level, int &length, int &maxIncorrect, vector<string> &wordList) {
 	switch (level) {
 	case 4:
@@ -46,6 +57,13 @@ void selectDiff(int &level, int &length, int &maxIncorrect, vector<string> &word
 	}
 }
 
+/*
+ * description: This function searches through temp for the words that are certain
+ *              length and putting them into wordList
+ * return: void                                          
+ * precondition: temp, length, wordList and numWords are valid                           
+ * postcondition: words with correct length are in wordList
+ */
 void loadCorrectLength(vector<string> temp, int length, vector<string> &wordList, int &numWords) {
 	for (int i = 0; i < temp.size(); i++) {
 		if (temp[i].length() == length) {
@@ -55,6 +73,12 @@ void loadCorrectLength(vector<string> temp, int length, vector<string> &wordList
 	}
 }
 
+/*
+ * description: This function gets the input from user then checking if is inside the attemptedLetters   
+ * return: void                                         
+ * precondition: repeatedLetter, letter, attemptedLetters and plotter are valid                           
+ * postcondition: a correct letter is recorded in attemptedLetters
+ */
 void inputCheck(bool &repeatedLetter, char &letter, vector<char> &attemptedLetters, SDL_Plotter& plotter) {
 	repeatedLetter = true;
 	do {
@@ -95,6 +119,12 @@ void inputCheck(bool &repeatedLetter, char &letter, vector<char> &attemptedLette
 	} while (repeatedLetter);
 }
 
+/*
+ * description: This function checks the word in currentList and add word to subList if it does or does not conatin letter
+ * return: void                                         
+ * precondition: numWords, foundLetter, length, currentList, subList, letter, doesContain and remainingVals are valid                           
+ * postcondition: subList has words that does or does not contain the letter
+ */
 void checkWord(int numWords, bool &foundLetter, int length, vector<string> currentList, char letter, int &remainingVals, vector<string> &subList, bool doesContain) {
 	for (int i = 0; i < numWords; i++) {
 		foundLetter = false;
@@ -103,7 +133,7 @@ void checkWord(int numWords, bool &foundLetter, int length, vector<string> curre
 			if (currentList[i][j] == letter)
 				foundLetter = true;
 		}
-		// update remainingVals and add word to currentList if it does not conatin letter
+		// update remainingVals and add word to currentList if it does or does not conatin letter
 		if (foundLetter == doesContain) {
 			remainingVals++;
 			subList.push_back(currentList[i]);
@@ -111,12 +141,25 @@ void checkWord(int numWords, bool &foundLetter, int length, vector<string> curre
 	}
 }
 
+/*
+ * description: This function picks a random word from the subList
+ * return: void                                 
+ * precondition: randomNum, subList and finalWord are valid                       
+ * postcondition: finalWord is chosen randomly from subList
+ */
 void pickRandom(int &randomNum, vector<string> subList, string &finalWord) {
 	srand(time(NULL));
 	randomNum = rand() % subList.size();
 	finalWord = subList[randomNum];
 }
 
+/*
+ * description: This function concatenate the last attempted char and a space
+ *              onto the attemptedLetters
+ * return: void                                 
+ * precondition: attemptedLetters and attemptedStr are valid                           
+ * postcondition: attemptedStr has a space and the last attempted letter
+ */
 void makeAttemptedStr(vector<char> attemptedLetters, string &attemptedStr) {
 	attemptedStr += " ";
 	attemptedStr += attemptedLetters[attemptedLetters.size() - 1];
