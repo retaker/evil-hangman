@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 	int level= 4;
 	bool MusicOn = true;
 	int mousePointer = 1;
+	int defaultScore = 1500;
 	bool inMainMenu = false;
 	bool GameStarted = false;
 	bool InSubMenu = false;
@@ -197,6 +198,25 @@ int main(int argc, char **argv)
 						GamingScreen(background, level);
 						background.update();
 						GameStarted = true;
+						wordList.clear();
+						
+						length = 0;
+						numWords = 0;
+						attempts = 0;
+						incorrect = 0;
+						remainingVals = 0;
+						multipleWordsRemaining = true;
+						repeatedLetter = false;
+						gameWon = false;
+						foundLetter = false;
+						noWords = false;
+						doesContain = false;
+						finalWord = "";
+						attemptedLetters.clear();
+						attemptedStr = "Incorrect Letters: ";
+						p3.setColor(0, 0, 0);
+
+
 
 						selectDiff(level, length, maxIncorrect, wordList);
 						loadCorrectLength(temp, length, wordList, numWords);
@@ -221,13 +241,13 @@ int main(int argc, char **argv)
 							background.update();
 							checkWord(numWords, foundLetter, length, currentList, letter, remainingVals, subList, doesContain);
 
-							cout << "--------------------------------------------------" << endl;
+							//cout << "--------------------------------------------------" << endl;
 
 							// output words remaining
-							if (remainingVals == 0)
-								cout << "Words remaining = " << remainingVals + 1 << endl;
-							else
-								cout << "Words remaining = " << remainingVals << endl;
+							//if (remainingVals == 0)
+								//cout << "Words remaining = " << remainingVals + 1 << endl;
+							//else {}
+								//cout << "Words remaining = " << remainingVals << endl;
 
 							// update numWords and the number of incorect if not zero
 							numWords = remainingVals;
@@ -238,9 +258,10 @@ int main(int argc, char **argv)
 								currentList = subList;
 
 								incorrect++;
-								// drawHead(p3, 50, background);
-								cout << "Sorry you guessed incorrectly!" << endl;
-								cout << "You have " << maxIncorrect - incorrect << " tries left" << endl;
+								drawMan(p3, 50, background, incorrect);
+								background.update();
+								//cout << "Sorry you guessed incorrectly!" << endl;
+								//cout << "You have " << maxIncorrect - incorrect << " tries left" << endl;
 							}
 							// if there is only one word left
 							else if (numWords == 1) {
@@ -249,8 +270,10 @@ int main(int argc, char **argv)
 								currentList = subList;
 
 								incorrect++;
-								cout << "Sorry you guessed incorrectly!" << endl;
-								cout << "You have " << maxIncorrect - incorrect << " tries left" << endl;
+								drawMan(p3, 50, background, incorrect);
+								background.update();
+								//cout << "Sorry you guessed incorrectly!" << endl;
+								//cout << "You have " << maxIncorrect - incorrect << " tries left" << endl;
 								finalWord = currentList[0];
 								multipleWordsRemaining = false;
 							}
@@ -259,8 +282,8 @@ int main(int argc, char **argv)
 								// check if word contains letter and create subset that does contain letter
 								checkWord(currentList.size(), foundLetter, length, currentList, letter, remainingVals, subList, doesContain = true);
 
-								cout << "You guessed a letter correctly!" << endl;
-								cout << "You have " << maxIncorrect - incorrect << " tries left" << endl;
+								//cout << "You guessed a letter correctly!" << endl;
+								//cout << "You have " << maxIncorrect - incorrect << " tries left" << endl;
 
 								// Picking a random word from new subset
 								pickRandom(randomNum, subList, finalWord);
@@ -269,7 +292,7 @@ int main(int argc, char **argv)
 								for (int i = 0; i < length; i++) {
 									if (finalWord[i] == letter)
 										correctLetterArr[i] = finalWord[i];
-									cout << correctLetterArr[i] << " ";
+									//cout << correctLetterArr[i] << " ";
 									p2.setLocation(WORD_START_X + i * WORD_SPACING, 495);
 									plotLetter(correctLetterArr[i], p2, 7, background);
 									background.update();
@@ -282,19 +305,19 @@ int main(int argc, char **argv)
 							}
 
 							//display correct letters / underscores
-							cout << endl;
+							//cout << endl;
 							if (numWords >= 1 && noWords == false) {
 								for (int i = 0; i < length; i++) {
-									cout << correctLetterArr[i] << " ";
+									//cout << correctLetterArr[i] << " ";
 									p2.setLocation(WORD_START_X + i * WORD_SPACING, 495);
 									plotLetter(correctLetterArr[i], p2, 7, background);
 									background.update();
 								}
 							}
-							cout << endl << endl << "Attempted Letters: ";
-							for (int i = 0; i < attemptedLetters.size(); i++)
-								cout << attemptedLetters[i] << " ";
-							cout << endl << "-----------------------------------------------------" << endl << endl;
+							//cout << endl << endl << "Attempted Letters: ";
+							//for (int i = 0; i < attemptedLetters.size(); i++)
+								//cout << attemptedLetters[i] << " ";
+							//cout << endl << "-----------------------------------------------------" << endl << endl;
 						}
 					
 						// Picking a random word from new subset
@@ -309,56 +332,61 @@ int main(int argc, char **argv)
 
 								// input letter
 								inputCheck(repeatedLetter, letter, attemptedLetters, background);
+								makeAttemptedStr(attemptedLetters, attemptedStr);
+								putString(attemptedStr, p1, 2, background);
+								background.update();
 
 								for (int i = 0; i < length; i++) {
 									if (finalWord[i] == letter)
 										foundLetter = true;
 								}
 
-								cout << "--------------------------------------------------" << endl;
-								cout << "Words remaining = " << numWords << endl;
+								//cout << "--------------------------------------------------" << endl;
+								//cout << "Words remaining = " << numWords << endl;
 
 								// Guessed the letter incorrectly
 								if (foundLetter == false) {
 									incorrect++;
-									cout << "Sorry you guessed incorrectly!" << endl;
-									cout << "You have " << maxIncorrect - incorrect << " tries left" << endl;
+									drawMan(p3, 50, background, incorrect);
+									background.update();
+									//cout << "Sorry you guessed incorrectly!" << endl;
+									//cout << "You have " << maxIncorrect - incorrect << " tries left" << endl;
 
 									// print correct letterss
-									cout << endl;
+									//cout << endl;
 									for (int i = 0; i < length; i++) {
-										cout << correctLetterArr[i] << " ";
+										//cout << correctLetterArr[i] << " ";
 										p2.setLocation(WORD_START_X + i * WORD_SPACING, 495);
 										plotLetter(correctLetterArr[i], p2, 7, background);
 										background.update();
 									}
 
 									// print attempted letters
-									cout << endl << endl << "Attempted Letters: ";
-									for (int i = 0; i < attemptedLetters.size(); i++)
-										cout << attemptedLetters[i] << " ";
-									cout << endl << "-----------------------------------------------------" << endl << endl;
+									//cout << endl << endl << "Attempted Letters: ";
+									//for (int i = 0; i < attemptedLetters.size(); i++)
+										//cout << attemptedLetters[i] << " ";
+									//cout << endl << "-----------------------------------------------------" << endl << endl;
 								}
 
 								// Guessed the letter correctly
 								else {
-									cout << "You guessed a letter correctly!" << endl;
-									cout << "You have " << maxIncorrect - incorrect << " tries left" << endl;
+									//cout << "You guessed a letter correctly!" << endl;
+									//cout << "You have " << maxIncorrect - incorrect << " tries left" << endl;
 
 									// update correct letter array with correct letters
 									for (int i = 0; i < length; i++) {
 										if (finalWord[i] == letter)
 											correctLetterArr[i] = finalWord[i];
-										cout << correctLetterArr[i] << " ";
+										//cout << correctLetterArr[i] << " ";
 										p2.setLocation(WORD_START_X + i * WORD_SPACING, 495);
 										plotLetter(correctLetterArr[i], p2, 7, background);
 										background.update();
 									}
 									// print attempted letters
-									cout << endl << endl << "Attempted Letters: ";
+									//cout << endl << endl << "Attempted Letters: ";
 									for (int i = 0; i < attemptedLetters.size(); i++)
-										cout << attemptedLetters[i] << " ";
-									cout << endl << "-----------------------------------------------------" << endl << endl;
+										//cout << attemptedLetters[i] << " ";
+									//cout << endl << "-----------------------------------------------------" << endl << endl;
 
 									gameWon = true;
 									for (int i = 0; i < finalWord.length() && gameWon == true; i++) {
@@ -370,8 +398,10 @@ int main(int argc, char **argv)
 						}
 
 						if (incorrect == maxIncorrect && gameWon == false) {
-							cout << "YOU LOSE!!!" << endl << endl;
-							cout << "The word was " << finalWord << endl << endl;
+							background.clear();
+							GameOver(background);
+							//cout << "YOU LOSE!!!" << endl << endl;
+							//cout << "The word was " << finalWord << endl << endl;
 
 							for (int i = 0; i < finalWord.length(); i++) {
 								p2.setColor(255, 0, 0);
@@ -380,14 +410,22 @@ int main(int argc, char **argv)
 									p2.setColor(0, 0, 0);
 								}
 
-								p2.setLocation(WORD_START_X + i * WORD_SPACING, 495);
+								p2.setLocation(WORD_START_X + i * WORD_SPACING, 400);
 								plotLetter(finalWord[i], p2, 7, background);
 							}
 							background.update();
 							
 						}
 						else {
-							cout << "YOU WON!!!" << endl << endl;
+							background.clear();
+							defaultScore = defaultScore - incorrect * 100;
+							string ScoreStr;
+							ScoreStr = to_string(defaultScore);
+							Point temp = Point(800, 200, 255, 0, 0);
+							putString(ScoreStr, temp, 6, background);
+							WonScreen(background,incorrect, defaultScore);
+							background.update();
+							//cout << "YOU WON!!!" << endl << endl;
 						}
 					}
 					else if (mousePointer == 4) 
